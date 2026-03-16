@@ -1,0 +1,14 @@
+export const gameContainer = document.getElementById('game-container');
+export const passwordInput = document.getElementById('password-input');
+export const passwordDisplay = document.getElementById('password-display');
+export const passwordLabel = document.getElementById('password-label');
+export const clockElement = document.getElementById('clock');
+export const adminPanel = document.getElementById('admin-panel');
+export const accessBtn = document.getElementById('access-btn');
+export const pcLabels = document.getElementById('pc-labels');
+export const introScreen = document.getElementById('intro-screen');
+export const introTextElement = document.getElementById('intro-text');
+export const continueHint = document.getElementById('continue-hint');
+export const textContent = document.getElementById('textfile-content');
+export const miniWindowText = document.getElementById('mini-window-text');
+export const cursor = document.getElementById('custom-cursor');

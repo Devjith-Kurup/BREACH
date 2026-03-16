@@ -1,0 +1,11 @@
+export const texture = new THREE.TextureLoader().load("assets/lockscreen.png");
+export const desktopTexture = new THREE.TextureLoader().load("assets/screen.png");
+export const desktop2Texture = new THREE.TextureLoader().load("assets/screen2.png");
+export const timedOutTexture = new THREE.TextureLoader().load("assets/timedOut.png");
+export const terminalTexture = new THREE.TextureLoader().load("assets/terminal.png");
+export const textFileTexture = new THREE.TextureLoader().load("assets/textfile.png");
+export const folderGreenTexture = new THREE.TextureLoader().load("assets/folderGreen.png");
+export const folderRedTexture = new THREE.TextureLoader().load("assets/folderRed.png");
+export const folderYellowTexture = new THREE.TextureLoader().load("assets/folderYellow.png");
+export const pcTexture = new THREE.TextureLoader().load("assets/pc.png");
+export const pcLockedTexture = new THREE.TextureLoader().load("assets/pcLocked.png");
