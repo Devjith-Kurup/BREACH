@@ -4,23 +4,23 @@ import {
     passwordInput, passwordDisplay, passwordLabel, clockElement, 
     introTextElement, adminPanel, accessBtn 
 } from '../elements.js';
-import { pcTexture, desktopTexture, timedOutTexture } from '../assets.js';
+import { pcTexture, pc2Texture, desktopTexture, timedOutTexture, folderRedTexture, folderGreenTexture, folderYellowTexture } from '../assets.js';
 import { playSound, startDeadSound } from '../audio.js';
 
 export function setupLockscreenInput() {
-    // --- ACCESS BUTTON ---
+    
     accessBtn.addEventListener('click', (e) => {
         e.stopPropagation();
         if (!accessBtn.disabled) {
             playSound('access_granted');
-            material.uniforms.tDiffuse.value = pcTexture;
+            material.uniforms.tDiffuse.value = state.isDisconnected ? pc2Texture : pcTexture;
             state.currentScreen = 'pc';
             adminPanel.style.display = 'none';
             state.isPcUnlocked = true;
         }
     });
 
-    // --- PASSWORD INPUT ---
+    
     passwordInput.addEventListener('input', (e) => {
         if (e.inputType === 'deleteContentBackward') {
             playSound('delete');
@@ -36,15 +36,39 @@ export function setupLockscreenInput() {
         }
 
         if (length === 4) {
-            if (passwordInput.value === 'asas') {
+            const val = passwordInput.value;
+            let isCorrect = false;
+
+            if (state.currentScreen === 'lockscreen' && val === 'asas') {
+                isCorrect = true;
+            } else if (['folderRedLocked', 'folderGreenLocked', 'folderYellowLocked'].includes(state.currentScreen) && val === '1234') { 
+                isCorrect = true;
+            }
+
+            if (isCorrect) {
                 state.failureCount = 0;
                 passwordInput.disabled = true;
 
                 setTimeout(() => {
                     playSound('success');
-                    material.uniforms.tDiffuse.value = desktopTexture;
-                    state.currentScreen = 'desktop';
-                    state.hasClosedMiniWindow = false;
+                    
+                    if (state.currentScreen === 'lockscreen') {
+                        material.uniforms.tDiffuse.value = desktopTexture;
+                        state.currentScreen = 'desktop';
+                        state.hasClosedMiniWindow = false;
+                    } else if (state.currentScreen === 'folderRedLocked') {
+                        material.uniforms.tDiffuse.value = folderRedTexture; 
+                        state.currentScreen = 'folder';
+                        state.isFolderRedUnlocked = true;
+                    } else if (state.currentScreen === 'folderGreenLocked') {
+                        material.uniforms.tDiffuse.value = folderGreenTexture; 
+                        state.currentScreen = 'folder';
+                        state.isFolderGreenUnlocked = true;
+                    } else if (state.currentScreen === 'folderYellowLocked') {
+                        material.uniforms.tDiffuse.value = folderYellowTexture; 
+                        state.currentScreen = 'folder';
+                        state.isFolderYellowUnlocked = true;
+                    }
 
                     passwordInput.style.display = 'none';
                     passwordDisplay.style.display = 'none';
@@ -54,8 +78,13 @@ export function setupLockscreenInput() {
             } else {
                 playSound('error');
                 passwordInput.disabled = true;
-                state.failureCount++;
+                
+                
+                if (['lockscreen', 'folderRedLocked', 'folderGreenLocked', 'folderYellowLocked'].includes(state.currentScreen)) {
+                    state.failureCount++;
+                }
 
+                
                 if (state.failureCount >= 3) {
                     setTimeout(() => {
                         playSound('glitch');
@@ -81,7 +110,10 @@ export function setupLockscreenInput() {
                         requestAnimationFrame(doShake);
                     } else {
                         material.uniforms.uShake.value = 0.0;
-                        if (state.failureCount >= 3) return;
+                        
+                        
+                        if (['lockscreen', 'folderRedLocked', 'folderGreenLocked', 'folderYellowLocked'].includes(state.currentScreen) && state.failureCount >= 3) return;
+                        
                         passwordInput.value = '';
                         passwordDisplay.innerHTML = '';
                         passwordInput.disabled = false;

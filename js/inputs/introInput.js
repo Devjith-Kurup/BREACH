@@ -11,6 +11,7 @@ export function setupIntroInput() {
         if (!state.isSystemBooted) {
             state.isSystemBooted = true;
             resumeAudio();
+            playSound('connect');
 
             introTextElement.style.animation = "none";
             introTextElement.style.cursor = "default";
@@ -40,13 +41,13 @@ export function setupIntroInput() {
             passwordLabel.style.opacity = '1';
             passwordDisplay.style.opacity = '1';
             if (clockElement) clockElement.style.opacity = '1';
-        }, 1000);
+        }, 300);
 
         setTimeout(() => {
             introScreen.style.display = 'none';
             passwordInput.disabled = false;
             passwordInput.focus();
-        }, 1600);
+        }, 800);
 
         let startTime = Date.now();
         const zoomDuration = 1500;

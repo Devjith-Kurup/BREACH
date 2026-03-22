@@ -20,9 +20,16 @@ body {
     pointer-events: none;
     z-index: 10000;
     image-rendering: pixelated;
+    transition: transform 0.1s;
+    transform-origin: top left;
 }
 
-input, button, div {
+#custom-cursor.clicked {
+    transform: scale(0.9, 0.8);
+}
+
+
+* {
     cursor: none !important;
 }
 
@@ -85,7 +92,7 @@ canvas {
     letter-spacing: 2px;
     transform: rotate(-1.5deg);
     opacity: 0;
-    transition: opacity 2s ease-in;
+    transition: opacity 1s ease-in;
 }
 
 .password-dot {
@@ -109,20 +116,24 @@ canvas {
     transform: translate(-50%, -50%);
     width: 60%;
     height: 60%;
-    color: transparent;
-    font-size: 14px;
+    color: black;
+    font-size: 13px;
     font-family: 'Press Start 2P', cursive;
     line-height: 1.6;
+    text-shadow: 0.5px 0.6px black;
     overflow-y: auto;
-    pointer-events: none;
+    pointer-events: auto;
     z-index: 102;
     padding: 20px;
     white-space: pre-wrap;
 }
 
-#textfile-content::after {
-    content: "PROJECT BREACH\A\A System Log: 2045-05-12\A Access Granted. System Integrity 98%.\A Remember to update the firewall protocols.\A Unauthorized access detected in sector 7.";
+#textfile-content.puzzle-mode {
+    color: transparent;
+    text-shadow: none;
+    pointer-events: none;
 }
+
 
 #password-label {
     position: absolute;
@@ -133,11 +144,12 @@ canvas {
     font-weight: normal;
     font-size: 15px;
     color: yellow;
+    text-shadow: 2px 2px #000;
     z-index: 100;
     text-align: center;
     pointer-events: none;
     opacity: 0;
-    transition: opacity 1s ease-in;
+    transition: opacity 0.5s ease-in;
     display: none;
 }
 
@@ -163,7 +175,7 @@ canvas {
     transform: translate(-50%, -50%);
     width: 260px;
     font-family: 'Press Start 2P', cursive;
-    font-size: 8px; /* Start small as user said "mini window" */
+    font-size: 8px; 
     color: #000000;
     text-shadow: 0.5px 0.5px #000;
     line-height: 1.8;
@@ -179,7 +191,7 @@ canvas {
     left: 0;
     width: 100%;
     height: 100%;
-    color: #ffffff; /* Hacker green */
+    color: #ffffff; 
     z-index: 9999;
     font-family: 'Press Start 2P', cursive;
     font-size: 14px;
@@ -193,7 +205,7 @@ canvas {
     background-color: black;
     padding: 20px;
     box-sizing: border-box;
-    transition: opacity 1.5s ease-in-out; /* Add transition for fade out */
+    transition: opacity 1.5s ease-in-out; 
 }
 
 #continue-hint {
@@ -265,4 +277,189 @@ canvas {
 
 .pc-label-settings {
     left: 43%;
+}
+
+.network-menu-label {
+    display: none;
+    position: absolute;
+    top: 38%;     
+    right: 14%;   
+    color: rgb(0, 0, 0);
+    font-family: 'Press Start 2P', cursive;
+    font-size: 10px;
+    pointer-events: none;
+    z-index: 100;
+}
+
+
+
+#terminal-content {
+    display: none;
+    position: absolute;
+    top: 28%;
+    left: 17%;
+    width: 65%;
+    height: 55%;
+    font-family: 'Press Start 2P', cursive;
+    font-weight: normal;
+    color: #ffffff;
+    font-size: 10px;
+    line-height: 1.5;
+    z-index: 200;
+    pointer-events: auto;
+    overflow-y: hidden;
+    overflow-x: hidden;
+    padding-right: 15px;
+    scrollbar-width: none;
+}
+
+#terminal-content::-webkit-scrollbar {
+    display: none;
+}
+
+#terminal-output {
+    text-shadow: none;
+    white-space: pre-wrap;
+    word-break: break-all; 
+    padding-bottom: 30px; 
+    width: 100%;
+}
+
+#terminal-input {
+    position: absolute;
+    opacity: 0;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: auto;
+    cursor: none;
+}
+
+.cursor {
+    display: inline-block;
+    width: 10px;
+    height: 16px;
+    background-color: #33ff33;
+    vertical-align: middle;
+    animation: blink 1s step-end infinite;
+}
+
+@keyframes blink {
+    50% { opacity: 0; }
+}
+
+
+#keypad-overlay {
+    display: none;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: #111;
+    border: 4px solid #444;
+    padding: 15px;
+    z-index: 300;
+    text-align: center;
+    color: #eee;
+    font-family: 'Press Start 2P', cursive;
+    box-shadow: 0 0 20px rgba(0,0,0,0.8);
+}
+
+.keypad-title {
+    font-size: 10px;
+    margin-bottom: 10px;
+    color: #aaa;
+}
+
+#keypad-display {
+    background: #000;
+    color: #ff3333;
+    padding: 10px;
+    height: 20px;
+    border: 2px solid #555;
+    margin-bottom: 15px;
+    font-size: 16px;
+    text-align: center;
+    line-height: 20px;
+    letter-spacing: 4px;
+    text-shadow: 0 0 5px #ff3333;
+}
+
+.keypad-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+}
+
+.keypad-btn {
+    width: 40px;
+    height: 40px;
+    background: #333;
+    border: 2px solid #555;
+    color: #fff;
+    font-family: inherit;
+    font-size: 12px;
+    cursor: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: background 0.1s;
+}
+
+.keypad-btn:active {
+    background: #666;
+    border-color: #888;
+}
+
+.keypad-btn.clear {
+    color: #ff5555;
+}
+
+.keypad-btn.enter {
+    color: #55ff55;
+}
+
+
+#red-folder-content {
+    display: none;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 400px;
+    height: 300px;
+    background: rgba(0,0,0,0.9);
+    border: 2px solid #ff3333;
+    padding: 20px;
+    z-index: 300;
+    color: #ffaaaa;
+    font-family: 'Courier New', monospace;
+    text-align: center;
+    box-shadow: 0 0 30px rgba(255, 0, 0, 0.2);
+}
+
+.folder-header {
+    border-bottom: 1px solid #ff3333;
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+
+#network-text {
+    position: absolute;
+    top: 25%;
+    left: 17%;
+    width: 65%;
+    font-family: 'Press Start 2P', cursive;
+    font-size: 10px;
+    color: #000000;
+    line-height: 1.6;
+    z-index: 105;
+    pointer-events: none;
+    display: none;
+    white-space: pre-wrap;
+    text-align: left;
 }

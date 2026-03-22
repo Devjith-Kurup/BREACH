@@ -1,11 +1,13 @@
 import { scene, camera, renderer, material } from './scene.js';
 import { state } from './state.js';
-import { textContent, miniWindowText, pcLabels, clockElement } from './elements.js';
+import { textContent, miniWindowText, pcLabels, clockElement, networkMenuLabel, terminalContent } from './elements.js';
 import { setupInputs } from './input.js';
 import { initIntro } from './intro.js';
+import { setupTerminal } from './terminal.js';
 
 initIntro();
 setupInputs();
+setupTerminal();
 
 function updateClock() {
     const now = new Date();
@@ -30,6 +32,8 @@ function animate() {
     textContent.style.display = (state.currentScreen === 'textfile') ? 'block' : 'none';
     miniWindowText.style.display = (state.currentScreen === 'desktop') ? 'block' : 'none';
     pcLabels.style.display = (state.currentScreen === 'pc') ? 'block' : 'none';
+    if (networkMenuLabel) networkMenuLabel.style.display = (state.currentScreen === 'network') ? 'block' : 'none';
+    if (terminalContent) terminalContent.style.display = (state.currentScreen === 'terminal') ? 'block' : 'none';
 
     renderer.render(scene, camera);
 }

@@ -1,8 +1,16 @@
-const audioCtx = new (window.AudioContext || window.webkitAudioContext)({ latencyHint: 'interactive' });
+let audioCtx = null;
+
+function getAudioContext() {
+    if (!audioCtx) {
+        audioCtx = new (window.AudioContext || window.webkitAudioContext)({ latencyHint: 'interactive' });
+    }
+    return audioCtx;
+}
 
 export function resumeAudio() {
-    if (audioCtx.state === 'suspended') {
-        audioCtx.resume().catch(e => console.log('Auto-play prevented by browser', e));
+    const ctx = getAudioContext();
+    if (ctx.state === 'suspended') {
+        ctx.resume().catch(() => {});
     }
 }
 
@@ -10,19 +18,20 @@ let deadSoundOscillator = null;
 let deadSoundGain = null;
 
 export function startDeadSound() {
+    const ctx = getAudioContext();
     if (deadSoundOscillator) return;
 
-    deadSoundOscillator = audioCtx.createOscillator();
-    deadSoundGain = audioCtx.createGain();
+    deadSoundOscillator = ctx.createOscillator();
+    deadSoundGain = ctx.createGain();
 
     deadSoundOscillator.type = 'sine';
-    deadSoundOscillator.frequency.setValueAtTime(2000, audioCtx.currentTime);
+    deadSoundOscillator.frequency.setValueAtTime(2000, ctx.currentTime);
 
-    deadSoundGain.gain.setValueAtTime(0, audioCtx.currentTime);
-    deadSoundGain.gain.linearRampToValueAtTime(0.005, audioCtx.currentTime + 2.0); // Slow fade in, very quiet
+    deadSoundGain.gain.setValueAtTime(0, ctx.currentTime);
+    deadSoundGain.gain.linearRampToValueAtTime(0.005, ctx.currentTime + 2.0); 
 
     deadSoundOscillator.connect(deadSoundGain);
-    deadSoundGain.connect(audioCtx.destination);
+    deadSoundGain.connect(ctx.destination);
 
     deadSoundOscillator.start();
 }
@@ -33,16 +42,17 @@ export function playJimboSound() {
 }
 
 export function playSound(type) {
-    if (audioCtx.state === 'suspended') {
-        audioCtx.resume().catch(() => {});
+    const ctx = getAudioContext();
+    if (ctx.state === 'suspended') {
+        ctx.resume().catch(() => {});
     }
-    const oscillator = audioCtx.createOscillator();
-    const gainNode = audioCtx.createGain();
+    const oscillator = ctx.createOscillator();
+    const gainNode = ctx.createGain();
 
     oscillator.connect(gainNode);
-    gainNode.connect(audioCtx.destination);
+    gainNode.connect(ctx.destination);
 
-    const now = audioCtx.currentTime;
+    const now = ctx.currentTime;
 
     if (type === 'open') {
         oscillator.type = 'sine';
@@ -123,5 +133,25 @@ export function playSound(type) {
 
         oscillator.start(now);
         oscillator.stop(now + 0.5);
+    } else if (type === 'disconnect') {
+        oscillator.type = 'sine';
+        oscillator.frequency.setValueAtTime(800, now);
+        oscillator.frequency.exponentialRampToValueAtTime(100, now + 0.3);
+        
+        gainNode.gain.setValueAtTime(0.3, now);
+        gainNode.gain.exponentialRampToValueAtTime(0.001, now + 0.3);
+        
+        oscillator.start(now);
+        oscillator.stop(now + 0.3);
+    } else if (type === 'connect') {
+        oscillator.type = 'sine';
+        oscillator.frequency.setValueAtTime(100, now);
+        oscillator.frequency.exponentialRampToValueAtTime(800, now + 0.3);
+        
+        gainNode.gain.setValueAtTime(0.3, now);
+        gainNode.gain.exponentialRampToValueAtTime(0.001, now + 0.3);
+        
+        oscillator.start(now);
+        oscillator.stop(now + 0.3);
     }
 }

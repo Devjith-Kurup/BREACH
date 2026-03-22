@@ -24,18 +24,16 @@ Find the evidence.
 Expose the company.
 Free Devjith.
 
-USE DEV TOOLS TO SURVIVE.`;
+USE DEV TOOLS TO YOUR AIDE.`;
 
 let charIndex = 0;
 
 export function typeWriter() {
     if (charIndex >= fullIntroText.length) {
-        // Ensure explicit finish
         continueHint.style.visibility = 'visible';
         return;
     }
 
-    // Check if we manually skipped
     if (introTextElement.textContent.length === fullIntroText.length) {
         continueHint.style.visibility = 'visible';
         return;
@@ -43,7 +41,6 @@ export function typeWriter() {
 
     introTextElement.textContent += fullIntroText.charAt(charIndex);
 
-    // Play typing sound (check for spaces to avoid too much noise?)
     if (fullIntroText.charAt(charIndex) !== ' ' && fullIntroText.charAt(charIndex) !== '\n') {
         playSound('type');
     }
@@ -51,7 +48,6 @@ export function typeWriter() {
     charIndex++;
 
     let delay = 35;
-    // Pause longer on periods or new lines for natural feel
     if (fullIntroText.charAt(charIndex - 1) === '.' || fullIntroText.charAt(charIndex - 1) === '\n') {
         delay = 150;
     }

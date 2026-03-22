@@ -3,5 +3,9 @@ export const state = {
     hasClosedMiniWindow: false,
     failureCount: 0,
     isSystemBooted: false,
-    isPcUnlocked: false
+    isPcUnlocked: false,
+    isFolderRedUnlocked: false,
+    isFolderGreenUnlocked: false,
+    isFolderYellowUnlocked: false,
+    isDisconnected: false
 };

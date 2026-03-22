@@ -5,21 +5,22 @@ import {
 } from '../elements.js';
 import { texture } from '../assets.js';
 import { playSound } from '../audio.js';
+import { stopNetworkTyping } from './desktopInput.js';
 
 export function handleGlobalClick(uv) {
-    // Power Button Logic (Bottom Right)
-    // Works globally except when already on lockscreen (or intro/timedOut technically, but intro is handled separately and timedOut is stuck)
-    
     if (state.currentScreen !== 'lockscreen' && uv.x > 0.82 && uv.x < 0.90 && uv.y > 0.10 && uv.y < 0.20) {
-        console.log("Power button clicked!");
+        stopNetworkTyping();
         playSound('power_off');
         material.uniforms.tDiffuse.value = texture;
         state.currentScreen = 'lockscreen';
         
-        // Reset State
         state.failureCount = 0;
+        state.isFolderRedUnlocked = false;
+        state.isFolderGreenUnlocked = false;
+        state.isFolderYellowUnlocked = false;
         
-        // Reset UI
+        state.hasClosedMiniWindow = false;
+        
         clockElement.style.display = 'block';
         passwordInput.disabled = false;
         passwordInput.value = '';
@@ -28,9 +29,10 @@ export function handleGlobalClick(uv) {
         passwordDisplay.innerHTML = '';
         passwordDisplay.style.display = 'flex';
         passwordLabel.style.display = 'block';
+        passwordLabel.textContent = 'ENTER PASSWORD';
         adminPanel.style.display = 'none';
         
-        return true; // Use this to indicate the click was handled
+        return true;
     }
     return false;
 }

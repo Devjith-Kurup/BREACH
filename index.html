@@ -38,22 +38,39 @@
             <div class="pc-label pc-label-settings">
                 SETTINGS</div>
         </div>
+
+        <div id="network-menu-label" class="network-menu-label">
+            NETWORK
+        </div>
         
+        <div id="network-text"></div>
+        
+        <div id="terminal-content">
+            <div id="terminal-output"></div>
+            <input type="text" id="terminal-input" autocomplete="off">
+        </div>
+
         <div id="mini-window-text">You're in. Good.
 
 Don't waste time.
 Start with MY PC.
 
-Detach from their network
-FIRST or they'll see you.
+Disconnect from their network first.
+They're watching.
 
 I hid everything inside.
-You'll know what to do.
+Not all controls are visible.
 
 Stay hidden.</div>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/three@0.158.0/build/three.min.js"></script>
+    <script type="importmap">
+        {
+          "imports": {
+            "three": "https://cdn.jsdelivr.net/npm/three@0.158.0/build/three.module.js"
+          }
+        }
+    </script>
     <script type="module" src="js/main.js"></script>
 </body>
-</html>-778*-
+</html>
