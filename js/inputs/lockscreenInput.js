@@ -39,9 +39,13 @@ export function setupLockscreenInput() {
             const val = passwordInput.value;
             let isCorrect = false;
 
-            if (state.currentScreen === 'lockscreen' && val === 'asas') {
+            if (state.currentScreen === 'lockscreen' && val === state.lockscreenPassword) {
                 isCorrect = true;
-            } else if (['folderRedLocked', 'folderGreenLocked', 'folderYellowLocked'].includes(state.currentScreen) && val === '1234') { 
+            } else if (state.currentScreen === 'folderYellowLocked' && val === '4823') {
+                isCorrect = true;
+            } else if (state.currentScreen === 'folderGreenLocked' && val === '7391') {
+                isCorrect = true;
+            } else if (state.currentScreen === 'folderRedLocked' && val === '5612') {
                 isCorrect = true;
             }
 

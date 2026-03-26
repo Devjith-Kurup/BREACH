@@ -10,6 +10,7 @@ export const introScreen = document.getElementById('intro-screen');
 export const introTextElement = document.getElementById('intro-text');
 export const continueHint = document.getElementById('continue-hint');
 export const textContent = document.getElementById('textfile-content');
+export const textSecretMessage = document.getElementById('textfile-secret-message');
 export const miniWindowText = document.getElementById('mini-window-text');
 export const cursor = document.getElementById('custom-cursor');
 export const networkMenuLabel = document.getElementById('network-menu-label');

@@ -96,6 +96,17 @@ window.connect = () => {
 };
 
 export function handleDesktopClick(uv) {
+        // X button trigger area for settings screen (same as network icon area)
+        if (state.currentScreen === 'settings') {
+            // Use the same close area as the network screen
+            const closeArea = { xMin: 0.82, xMax: 0.87, yMin: 0.77, yMax: 0.83 };
+            if (uv.x > closeArea.xMin && uv.x < closeArea.xMax && uv.y > closeArea.yMin && uv.y < closeArea.yMax) {
+                playSound('close');
+                material.uniforms.tDiffuse.value = state.isDisconnected ? pc2Texture : pcTexture;
+                state.currentScreen = 'pc';
+                return;
+            }
+        }
     
     
 
@@ -128,8 +139,15 @@ export function handleDesktopClick(uv) {
             playSound('open');
             material.uniforms.tDiffuse.value = textFileTexture;
             state.currentScreen = 'textfile';
-            textContent.textContent = "PROJECT BREACH\n\n System Log: 2045-05-12\n Access Granted. System Integrity 98%.\n Remember to update the firewall protocols.\n Unauthorized access detected in sector 7.";
+            textContent.textContent = "SYSTEM ID prefix — first two digits.\nBUILD version — first two digits.\n\nDATE in the logs — day then month.\nCount what got affected.\n\nNodes that went offline.\nFiles still standing.";
             textContent.classList.add('puzzle-mode');
+            // Show main puzzle, hide the hidden message
+            import('../elements.js').then(({ textSecretMessage }) => {
+                if (textSecretMessage) {
+                    textSecretMessage.textContent = 'Before you leave —\nreconnect.\nOr they will find you.';
+                    textSecretMessage.style.display = 'none';
+                }
+            });
         }
         else if (uv.x > col2XMin && uv.x < col2XMax && uv.y > row2YMin && uv.y < row2YMax - 0.03) {
             playSound('open');
@@ -253,13 +271,30 @@ export function handleDesktopClick(uv) {
         if (state.currentScreen === 'pc') {
             const col1XMin = 0.12, col1XMax = 0.20;
             const row1YMin = 0.78, row1YMax = 0.88;
-            
-            
+            // Network icon area
             if (uv.x > col1XMin && uv.x < col1XMax + 0.08 && uv.y > row1YMin - 0.08 && uv.y < row1YMax - 0.04) {
-                 playSound('open');
-                 material.uniforms.tDiffuse.value = state.isDisconnected ? network2Texture : networkTexture;
-                 state.currentScreen = 'network';
-                 startNetworkTyping();
+                playSound('open');
+                material.uniforms.tDiffuse.value = state.isDisconnected ? network2Texture : networkTexture;
+                state.currentScreen = 'network';
+                startNetworkTyping();
+            }
+            // Settings icon area: moved even further right
+            else if (uv.x > col1XMax + 0.18 && uv.x < col1XMax + 0.26 && uv.y > row1YMin - 0.08 && uv.y < row1YMax - 0.04) {
+                playSound('open');
+                import('../assets.js').then(({ settingsTexture }) => {
+                    material.uniforms.tDiffuse.value = settingsTexture;
+                });
+                state.currentScreen = 'settings';
+            }
+        }
+        // X button trigger area for settings screen (same as network icon area)
+        if (state.currentScreen === 'settings') {
+            const col1XMin = 0.12, col1XMax = 0.20;
+            const row1YMin = 0.78, row1YMax = 0.88;
+            if (uv.x > col1XMin && uv.x < col1XMax + 0.08 && uv.y > row1YMin - 0.08 && uv.y < row1YMax - 0.04) {
+                playSound('close');
+                material.uniforms.tDiffuse.value = state.isDisconnected ? pc2Texture : pcTexture;
+                state.currentScreen = 'pc';
             }
         }
     } else if (state.currentScreen === 'network') {

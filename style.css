@@ -1,3 +1,20 @@
+#textfile-secret-message {
+    display: none;
+    position: absolute;
+    top: 70%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 60%;
+    color: rgb(255, 0, 0);
+    font-size: 13px;
+    font-family: 'Press Start 2P', cursive;
+    line-height: 1.6;
+    z-index: 103;
+    padding: 10px;
+    white-space: pre-wrap;
+    background: none;
+    pointer-events: auto;
+}
 body {
     margin: 0;
     background: black;

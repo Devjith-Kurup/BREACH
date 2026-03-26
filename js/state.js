@@ -7,5 +7,6 @@ export const state = {
     isFolderRedUnlocked: false,
     isFolderGreenUnlocked: false,
     isFolderYellowUnlocked: false,
-    isDisconnected: false
+    isDisconnected: false,
+    lockscreenPassword: ''
 };

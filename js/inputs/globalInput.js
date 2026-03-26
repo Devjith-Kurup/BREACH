@@ -13,14 +13,14 @@ export function handleGlobalClick(uv) {
         playSound('power_off');
         material.uniforms.tDiffuse.value = texture;
         state.currentScreen = 'lockscreen';
-        
+
         state.failureCount = 0;
         state.isFolderRedUnlocked = false;
         state.isFolderGreenUnlocked = false;
         state.isFolderYellowUnlocked = false;
-        
+
         state.hasClosedMiniWindow = false;
-        
+
         clockElement.style.display = 'block';
         passwordInput.disabled = false;
         passwordInput.value = '';
@@ -31,7 +31,11 @@ export function handleGlobalClick(uv) {
         passwordLabel.style.display = 'block';
         passwordLabel.textContent = 'ENTER PASSWORD';
         adminPanel.style.display = 'none';
-        
+
+        // Hide the textfile secret message if visible
+        const secretMsg = document.getElementById('textfile-secret-message');
+        if (secretMsg) secretMsg.style.display = 'none';
+
         return true;
     }
     return false;

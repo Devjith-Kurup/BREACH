@@ -5,6 +5,20 @@ import { setupInputs } from './input.js';
 import { initIntro } from './intro.js';
 import { setupTerminal } from './terminal.js';
 
+function generateLockscreenPassword() {
+    const password = Math.floor(1000 + Math.random() * 9000).toString();
+    state.lockscreenPassword = password;
+
+    // Add to DOM for devtools visibility
+    const debugElement = document.createElement('div');
+    debugElement.id = 'debug-lockscreen-password';
+    debugElement.style.display = 'none';
+    debugElement.textContent = `Lockscreen Password: ${password}`;
+    document.body.appendChild(debugElement);
+}
+
+generateLockscreenPassword();
+
 initIntro();
 setupInputs();
 setupTerminal();

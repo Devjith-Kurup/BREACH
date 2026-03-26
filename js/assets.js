@@ -1,3 +1,4 @@
+export const settingsTexture = new THREE.TextureLoader().load("assets/settings.png");
 import * as THREE from 'three';
 
 export const texture = new THREE.TextureLoader().load("assets/lockscreen.png");
