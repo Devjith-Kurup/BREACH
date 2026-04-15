@@ -1,5 +1,6 @@
 import { terminalInput, terminalOutput, terminalContent } from './elements.js';
 import { playSound } from './audio.js';
+import { fetchLeaderboard, fetchRank, getCurrentPlayer, formatTime } from './leaderboard.js';
 
 export function setupTerminal() {
     const prompt = "PS C:\\Users\\devjith> ";
@@ -54,8 +55,44 @@ export function setupTerminal() {
             "UPLOAD READY"
         ],
         clear: null,
-        cls: null
+        cls: null,
+        leaderboard: null
     };
+
+    async function renderLeaderboard() {
+        const currentPlayer = getCurrentPlayer();
+        const [topPlayers, rank] = await Promise.all([
+            fetchLeaderboard(),
+            fetchRank(currentPlayer.userId)
+        ]);
+
+        const lines = [
+            'GLOBAL LEADERBOARD (TOP 10)',
+            '---------------------------'
+        ];
+
+        if (!topPlayers.length) {
+            lines.push('NO SCORES RECORDED YET.');
+        } else {
+            for (let i = 0; i < topPlayers.length; i++) {
+                const entry = topPlayers[i];
+                const place = String(i + 1).padStart(2, '0');
+                const name = String(entry.username || 'UNKNOWN').padEnd(16, ' ');
+                const bestTime = formatTime(Number(entry.best_time));
+                lines.push(`${place}. ${name} ${bestTime}`);
+            }
+        }
+
+        lines.push('');
+
+        if (rank) {
+            lines.push(`YOU: #${rank.rank} (${formatTime(Number(rank.best_time))})`);
+        } else {
+            lines.push('YOU: UNRANKED');
+        }
+
+        typeLines(lines);
+    }
 
     render();
 
@@ -64,7 +101,7 @@ export function setupTerminal() {
         render();
     });
 
-    terminalInput.addEventListener('keydown', (e) => {
+    terminalInput.addEventListener('keydown', async (e) => {
         if (e.key === 'Enter') {
             const cmd = terminalInput.value.trim().toLowerCase();
 
@@ -75,6 +112,19 @@ export function setupTerminal() {
                 history = [];
                 playSound('delete');
                 render();
+            } else if (cmd === 'leaderboard') {
+                playSound('success');
+                typeLines(['QUERYING LEADERBOARD...']);
+
+                try {
+                    await renderLeaderboard();
+                } catch (error) {
+                    playSound('error');
+                    typeLines([
+                        'LEADERBOARD UNAVAILABLE',
+                        String(error.message || 'REQUEST FAILED')
+                    ]);
+                }
             } else if (commands[cmd]) {
                 playSound('success');
                 typeLines(commands[cmd]);

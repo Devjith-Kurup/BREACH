@@ -8,5 +8,10 @@ export const state = {
     isFolderGreenUnlocked: false,
     isFolderYellowUnlocked: false,
     isDisconnected: false,
-    lockscreenPassword: ''
+    lockscreenPassword: '',
+    hasShownNexusExposed: false,
+    runStartedAt: 0,
+    runCompletedAt: 0,
+    lastCompletionTime: 0,
+    scoreSubmitted: false
 };

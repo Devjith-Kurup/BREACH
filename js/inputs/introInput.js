@@ -3,6 +3,7 @@ import { mesh } from '../scene.js';
 import { introScreen, introTextElement, continueHint, passwordLabel, passwordInput, passwordDisplay, clockElement } from '../elements.js';
 import { playSound, resumeAudio } from '../audio.js';
 import { typeWriter, getCurrentCharIndex, setCharIndex, getFullIntroText } from '../intro.js';
+import { startRunTimer } from '../leaderboard.js';
 
 export function setupIntroInput() {
     introScreen.addEventListener('click', (e) => {
@@ -10,6 +11,7 @@ export function setupIntroInput() {
 
         if (!state.isSystemBooted) {
             state.isSystemBooted = true;
+            startRunTimer();
             resumeAudio();
             playSound('connect');
 

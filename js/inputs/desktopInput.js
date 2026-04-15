@@ -7,6 +7,7 @@ import {
     folderYellowTexture, folderYellowLockedTexture, pcTexture, pc2Texture, pcLockedTexture, networkTexture, network2Texture
 } from '../assets.js';
 import { playSound, playJimboSound } from '../audio.js';
+import { checkAndSubmitCompletion } from '../leaderboard.js';
 
 const networkContent = `NETWORK =>
 [=========================] 100%
@@ -80,6 +81,7 @@ window.disconnect = () => {
          startNetworkTyping();
     }
     console.log("disconnected from the network");
+    checkAndSubmitCompletion();
 };
 
 window.connect = () => {
@@ -93,6 +95,7 @@ window.connect = () => {
          startNetworkTyping();
     }
     console.log("connected to the network");
+    checkAndSubmitCompletion();
 };
 
 export function handleDesktopClick(uv) {

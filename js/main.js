@@ -4,6 +4,7 @@ import { textContent, miniWindowText, pcLabels, clockElement, networkMenuLabel, 
 import { setupInputs } from './input.js';
 import { initIntro } from './intro.js';
 import { setupTerminal } from './terminal.js';
+import { ensurePlayerIdentity } from './leaderboard.js';
 
 function generateLockscreenPassword() {
     const password = Math.floor(1000 + Math.random() * 9000).toString();
@@ -19,6 +20,7 @@ function generateLockscreenPassword() {
 
 generateLockscreenPassword();
 
+ensurePlayerIdentity();
 initIntro();
 setupInputs();
 setupTerminal();

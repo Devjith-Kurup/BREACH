@@ -15,6 +15,7 @@ export const miniWindowText = document.getElementById('mini-window-text');
 export const cursor = document.getElementById('custom-cursor');
 export const networkMenuLabel = document.getElementById('network-menu-label');
 export const networkTextElement = document.getElementById('network-text');
+export const nexusExposedMessage = document.getElementById('nexus-exposed-message');
 
 export const terminalContent = document.getElementById('terminal-content');
 export const terminalOutput = document.getElementById('terminal-output');

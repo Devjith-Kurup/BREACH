@@ -2,10 +2,29 @@ import { state } from '../state.js';
 import { material } from '../scene.js';
 import { 
     passwordInput, passwordDisplay, passwordLabel, clockElement, 
-    introTextElement, adminPanel, accessBtn 
+    introTextElement, adminPanel, accessBtn, nexusExposedMessage
 } from '../elements.js';
 import { pcTexture, pc2Texture, desktopTexture, timedOutTexture, folderRedTexture, folderGreenTexture, folderYellowTexture } from '../assets.js';
 import { playSound, startDeadSound } from '../audio.js';
+import { checkAndSubmitCompletion } from '../leaderboard.js';
+
+function revealNexusExposedIfComplete() {
+    const allFoldersUnlocked = state.isFolderRedUnlocked && state.isFolderGreenUnlocked && state.isFolderYellowUnlocked;
+    if (!allFoldersUnlocked || state.hasShownNexusExposed) {
+        return;
+    }
+
+    state.hasShownNexusExposed = true;
+    if (!nexusExposedMessage) {
+        return;
+    }
+
+    nexusExposedMessage.style.display = 'flex';
+    nexusExposedMessage.classList.remove('show');
+    // Force reflow so animation reliably restarts each run.
+    void nexusExposedMessage.offsetWidth;
+    nexusExposedMessage.classList.add('show');
+}
 
 export function setupLockscreenInput() {
     
@@ -64,14 +83,20 @@ export function setupLockscreenInput() {
                         material.uniforms.tDiffuse.value = folderRedTexture; 
                         state.currentScreen = 'folder';
                         state.isFolderRedUnlocked = true;
+                        revealNexusExposedIfComplete();
+                        checkAndSubmitCompletion();
                     } else if (state.currentScreen === 'folderGreenLocked') {
                         material.uniforms.tDiffuse.value = folderGreenTexture; 
                         state.currentScreen = 'folder';
                         state.isFolderGreenUnlocked = true;
+                        revealNexusExposedIfComplete();
+                        checkAndSubmitCompletion();
                     } else if (state.currentScreen === 'folderYellowLocked') {
                         material.uniforms.tDiffuse.value = folderYellowTexture; 
                         state.currentScreen = 'folder';
                         state.isFolderYellowUnlocked = true;
+                        revealNexusExposedIfComplete();
+                        checkAndSubmitCompletion();
                     }
 
                     passwordInput.style.display = 'none';
